@@ -1,0 +1,4 @@
+/vendor/
+phpinfo.php
+.DS_Store
+.idea

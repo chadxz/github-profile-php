@@ -1,0 +1,10 @@
+<?php
+
+return PhpCsFixer\Config::create()
+    ->setCacheFile(__DIR__ . '/vendor/.php_cs.cache')
+    ->setRules([
+        'braces' => [
+            'position_after_functions_and_oop_constructs' => 'same'
+        ]
+    ])
+    ->setFinder(PhpCsFixer\Finder::create()->in(__DIR__));

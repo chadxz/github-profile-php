@@ -1,0 +1,11 @@
+.git
+.idea/
+docker-compose*
+Dockerfile
+Makefile
+README.md
+.DS_Store
+.dockerignore
+.gitignore
+bin/compose.sh
+phpinfo.php

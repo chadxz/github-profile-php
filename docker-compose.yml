@@ -1,0 +1,8 @@
+---
+version: '3'
+services:
+  github-profile-php:
+    image: github-profile-php
+    container_name: gpp
+    ports:
+      - 8000:80

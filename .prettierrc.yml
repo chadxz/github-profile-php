@@ -1,0 +1,6 @@
+# prettier.io - automatic code formatting
+# https://github.com/prettier/plugin-php#configuration
+printWidth: 80
+braceStyle: 1tbs
+useTabs: false
+tabWidth: 4

@@ -1,0 +1,11 @@
+---
+# Run the container with source code mounted in from your local computer.
+version: '3'
+services:
+  github-profile-php:
+    volumes:
+      - .:/var/www/html
+    command: bash -c "composer install && apache2-foreground"
+    environment:
+      DEBUG: 'true'
+      XDEBUG_CONFIG:
