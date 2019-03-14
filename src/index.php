@@ -32,7 +32,7 @@ $container['session'] = function () {
 $container['config'] = function () {
     $root_dir = dirname(dirname(__FILE__));
     $config = new Config();
-    $config->load($root_dir);
+    $config::load($root_dir);
 
     return $config;
 };
