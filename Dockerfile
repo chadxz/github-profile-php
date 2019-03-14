@@ -33,7 +33,7 @@ RUN apt-get update -qq && \
     apt-get purge -y --auto-remove && \
     rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-install zip && \
+RUN docker-php-ext-install json zip && \
     pecl install -o -f xdebug-2.7.0 && \
     rm -rf /tmp/pear
 

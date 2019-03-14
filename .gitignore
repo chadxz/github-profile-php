@@ -2,3 +2,5 @@
 phpinfo.php
 .DS_Store
 .idea
+.env*
+!.env.example
