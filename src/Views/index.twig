@@ -1,0 +1,12 @@
+<html>
+<body>
+{% if not flash('login') is empty %}
+    <ul class="alert alert-danger">
+        {% for msg in flash('login') %}
+            <li>{{ msg }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+<p>Hello from slim. Logged in? {{ name }}</p>
+</body>
+</html>

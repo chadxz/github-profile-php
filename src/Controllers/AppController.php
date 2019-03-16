@@ -27,13 +27,15 @@ class AppController {
      *
      * @param Request $req
      * @param Response $res
-     * @return Response
+     * @return ResponseInterface
      */
-    public function index(Request $req, Response $res): Response {
+    public function index(Request $req, Response $res): ResponseInterface {
         /** @var \SlimSession\Helper $session */
         $session = $this->container['session'];
         /** @var \GuzzleHttp\Client $http */
         $http = $this->container['http'];
+        /** @var \Slim\Views\Twig $view */
+        $view = $this->container['view'];
 
         $token = $session->get('token');
         $name = null;
@@ -50,7 +52,6 @@ class AppController {
             $name = $values['login'];
         }
 
-        $res->getBody()->write("Hello from slim. Logged in? {$name}");
-        return $res;
+        return $view->render($res, 'index.twig', [ 'name' => $name ]);
     }
 }

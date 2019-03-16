@@ -32,15 +32,20 @@ class AuthController {
     public function login(Request $req, Response $res): Response {
         /** @var \App\Services\Config $config */
         $config = $this->container['config'];
+        /** @var \SlimSession\Helper $session */
+        $session = $this->container['session'];
 
         $base_url = $config::get('BASE_URL');
         $login_url = $config::get('GITHUB_AUTH_URL');
         $client_id = $config::get('GITHUB_CLIENT_ID');
 
+        $state = bin2hex(random_bytes(20));
+        $session->set('login_state', $state);
+
         $query = http_build_query([
             "client_id" => $client_id,
             "redirect_uri" => "{$base_url}/github/auth-callback",
-            "state" => bin2hex(random_bytes(20))
+            "state" => $state
         ]);
 
         return $res->withRedirect("{$login_url}?$query");
@@ -60,8 +65,11 @@ class AuthController {
         $router = $this->container['router'];
         /** @var \SlimSession\Helper $session */
         $session = $this->container['session'];
+        /** @var \Slim\Flash\Messages $flash */
+        $flash = $this->container['flash'];
 
         $session::destroy();
+        $flash->addMessage('login', 'Logged out.');
         return $res->withRedirect($router->pathFor('index'));
     }
 
@@ -84,11 +92,21 @@ class AuthController {
         $router = $this->container['router'];
         /** @var \SlimSession\Helper $session */
         $session = $this->container['session'];
+        /** @var \Slim\Flash\Messages $flash */
+        $flash = $this->container['flash'];
 
         $base_url = $config::get('BASE_URL');
         $token_url = $config::get('GITHUB_ACCESS_TOKEN_URL');
         $client_id = $config::get('GITHUB_CLIENT_ID');
         $client_secret = $config::get('GITHUB_CLIENT_SECRET');
+
+        $state = $req->getQueryParam('state');
+        $login_state = $session->get('login_state');
+
+        if ($state !== $login_state) {
+            $flash->addMessage('login', 'Login request invalid. Try again.');
+            return $res->withRedirect($router->pathFor('index'));
+        }
 
         /** @var ResponseInterface $response */
         $response = $http->post($token_url, [
@@ -97,13 +115,14 @@ class AuthController {
                 "client_secret" => $client_secret,
                 "code" => $req->getQueryParam('code'),
                 "redirect_uri" => "{$base_url}/github/auth-callback",
-                "state" => $req->getQueryParam('state')
+                "state" => $state
             ]
         ]);
 
         $values = json_decode($response->getBody(), true);
 
         $session->set('token', $values['access_token']);
+        $flash->addMessage('login', 'Logged in!');
         return $res->withRedirect($router->pathFor('index'));
     }
 }

@@ -4,6 +4,8 @@ use App\Controllers\AppController;
 use App\Controllers\AuthController;
 use App\Services\Config;
 use Slim\App;
+use Slim\Container;
+use Slim\Http\Uri;
 use Slim\Middleware\Session;
 
 require '../vendor/autoload.php';
@@ -44,6 +46,27 @@ $container['http'] = function () {
         ]
     ]);
     return $client;
+};
+
+$container['flash'] = function () {
+    return new \Slim\Flash\Messages();
+};
+
+$container['view'] = function (Container $container) {
+    $template_dir = realpath(__DIR__ . '/Views') ?: '';
+    $view = new \Slim\Views\Twig($template_dir, [
+        'strict_variables' => true
+    ]);
+
+    /** @var \Slim\Router $router */
+    $router = $container['router'];
+    /** @var \Slim\Flash\Messages $flash */
+    $flash = $container['flash'];
+
+    $uri = Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
+    $view->addExtension(new \Slim\Views\TwigExtension($router, $uri));
+    $view->addExtension(new Knlv\Slim\Views\TwigMessages($flash));
+    return $view;
 };
 
 $app->get('/', AppController::class . ':index')->setName('index');
