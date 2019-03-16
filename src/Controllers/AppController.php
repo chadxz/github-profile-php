@@ -52,6 +52,6 @@ class AppController {
             $name = $values['login'];
         }
 
-        return $view->render($res, 'index.twig', [ 'name' => $name ]);
+        return $view->render($res, 'index.twig', ['name' => $name]);
     }
 }
