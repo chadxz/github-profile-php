@@ -2,7 +2,7 @@
 
 use App\Controllers\AppController;
 use App\Controllers\AuthController;
-use App\Services\Config;
+use App\Services\ConfigService;
 use Slim\App;
 use Slim\Container;
 use Slim\Http\Uri;
@@ -39,7 +39,7 @@ $container['session'] = function () {
 
 $container['config'] = function () {
     $root_dir = dirname(dirname(__FILE__));
-    $config = new Config();
+    $config = new ConfigService();
     $config::load($root_dir);
 
     return $config;
@@ -52,6 +52,13 @@ $container['http'] = function () {
         ]
     ]);
     return $client;
+};
+
+$container['github'] = function (Container $container) {
+    /** @var \GuzzleHttp\Client $http */
+    $http = $container['http'];
+
+    return new \App\Services\GithubService($http);
 };
 
 $container['flash'] = function () {

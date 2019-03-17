@@ -1,0 +1,7 @@
+{% extends "layout.twig" %}
+{% block content %}
+    <p>
+        Hello {{ profile.name }}.
+        Care to <a href="{{ path_for('logout') }}">logout</a>?
+    </p>
+{% endblock %}

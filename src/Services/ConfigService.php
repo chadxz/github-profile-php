@@ -1,10 +1,9 @@
 <?php
-
 namespace App\Services;
 
 use Dotenv\Dotenv;
 
-class Config {
+class ConfigService {
     /**
      * @param string $env_file_dir
      */

@@ -32,26 +32,32 @@ class AppController {
     public function index(Request $req, Response $res): ResponseInterface {
         /** @var \SlimSession\Helper $session */
         $session = $this->container['session'];
-        /** @var \GuzzleHttp\Client $http */
-        $http = $this->container['http'];
+
+        $token = $session->get('token');
+
+        return $token !== null ?
+            $this->renderProfilePage($res) :
+            $this->renderLoginPage($res);
+    }
+
+    private function renderLoginPage(Response $res): ResponseInterface {
         /** @var \Slim\Views\Twig $view */
         $view = $this->container['view'];
 
+        return $view->render($res, 'login.twig');
+    }
+
+    private function renderProfilePage(Response $res): ResponseInterface {
+        /** @var \SlimSession\Helper $session */
+        $session = $this->container['session'];
+        /** @var \Slim\Views\Twig $view */
+        $view = $this->container['view'];
+        /** @var \App\Services\GithubService $github */
+        $github = $this->container['github'];
+
         $token = $session->get('token');
-        $name = null;
+        $profile = $github->getProfile($token);
 
-        if ($token !== null) {
-            /** @var ResponseInterface $response */
-            $response = $http->get('https://api.github.com/user', [
-                'headers' => [
-                    'Authorization' => "Bearer {$token}"
-                ]
-            ]);
-
-            $values = json_decode($response->getBody(), true);
-            $name = $values['login'];
-        }
-
-        return $view->render($res, 'index.twig', ['name' => $name]);
+        return $view->render($res, 'profile.twig', ['profile' => $profile]);
     }
 }

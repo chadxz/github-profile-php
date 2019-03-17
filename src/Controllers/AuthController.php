@@ -30,7 +30,7 @@ class AuthController {
      * @throws \Exception
      */
     public function login(Request $req, Response $res): Response {
-        /** @var \App\Services\Config $config */
+        /** @var \App\Services\ConfigService $config */
         $config = $this->container['config'];
         /** @var \SlimSession\Helper $session */
         $session = $this->container['session'];
@@ -81,7 +81,7 @@ class AuthController {
      * @throws \Exception
      */
     public function authCallback(Request $req, Response $res): Response {
-        /** @var \App\Services\Config $config */
+        /** @var \App\Services\ConfigService $config */
         $config = $this->container['config'];
         /** @var \GuzzleHttp\Client $http */
         $http = $this->container['http'];

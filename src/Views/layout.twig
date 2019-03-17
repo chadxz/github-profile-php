@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <body>
 {% if not flash('login') is empty %}
     <ul class="alert alert-danger">
@@ -7,6 +8,6 @@
         {% endfor %}
     </ul>
 {% endif %}
-<p>Hello from slim. Logged in? {{ name }}</p>
+{% block content %}{% endblock %}
 </body>
 </html>
