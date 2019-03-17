@@ -118,6 +118,11 @@ class AuthController {
 
         $values = json_decode($response->getBody(), true);
 
+        if (!isset($values['access_token'])) {
+            $flash->addMessage('login', 'Something went wrong. Sorry.');
+            return $res->withRedirect($router->pathFor('index'));
+        }
+
         $session->set('token', $values['access_token']);
         $flash->addMessage('login', 'Logged in!');
         return $res->withRedirect($router->pathFor('index'));
