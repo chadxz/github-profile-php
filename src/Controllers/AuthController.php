@@ -65,11 +65,8 @@ class AuthController {
         $router = $this->container['router'];
         /** @var \SlimSession\Helper $session */
         $session = $this->container['session'];
-        /** @var \Slim\Flash\Messages $flash */
-        $flash = $this->container['flash'];
 
         $session::destroy();
-        $flash->addMessage('login', 'Logged out.');
         return $res->withRedirect($router->pathFor('index'));
     }
 
