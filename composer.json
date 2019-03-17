@@ -1,5 +1,5 @@
 {
-    "name": "cmcelligott/github-profile-php",
+    "name": "chadxz/github-profile-php",
     "description": "PHP example of rendering github profile data",
     "type": "project",
     "license": "MIT",
@@ -11,7 +11,8 @@
         "guzzlehttp/guzzle": "^6.3",
         "slim/flash": "^0.4.0",
         "slim/twig-view": "^2.4",
-        "kanellov/slim-twig-flash": "^0.2.0"
+        "kanellov/slim-twig-flash": "^0.2.0",
+        "monolog/monolog": "^1.24"
     },
     "require-dev": {
         "phpstan/phpstan": "^0.11.3",

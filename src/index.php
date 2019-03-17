@@ -27,6 +27,12 @@ $app->add(
 
 $container = $app->getContainer();
 
+$container['log'] = function () {
+    $log = new \Monolog\Logger('app');
+    $log->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout'));
+    return $log;
+};
+
 $container['session'] = function () {
     return new \SlimSession\Helper();
 };

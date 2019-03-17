@@ -91,6 +91,8 @@ class AuthController {
         $session = $this->container['session'];
         /** @var \Slim\Flash\Messages $flash */
         $flash = $this->container['flash'];
+        /** @var \Psr\Log\LoggerInterface $log */
+        $log = $this->container['log'];
 
         $base_url = $config::get('BASE_URL');
         $token_url = $config::get('GITHUB_ACCESS_TOKEN_URL');
@@ -119,6 +121,7 @@ class AuthController {
         $values = json_decode($response->getBody(), true);
 
         if (!isset($values['access_token'])) {
+            $log->error('Invalid token response json from Github', $values);
             $flash->addMessage('login', 'Something went wrong. Sorry.');
             return $res->withRedirect($router->pathFor('index'));
         }
