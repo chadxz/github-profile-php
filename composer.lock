@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2dd7cd11181f7c7b3e4f3bbb8a06157b",
+    "content-hash": "996b53b7ca11e309bfae07659923797e",
     "packages": [
         {
             "name": "bryanjhv/slim-session",
@@ -2650,16 +2650,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.11.3",
+            "version": "0.11.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "e4644b4a8fd393c346f1137305fb2f76a7dc20a7"
+                "reference": "ccc4f854748664cc61d1f3d4ecb26810df1f0cd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e4644b4a8fd393c346f1137305fb2f76a7dc20a7",
-                "reference": "e4644b4a8fd393c346f1137305fb2f76a7dc20a7",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/ccc4f854748664cc61d1f3d4ecb26810df1f0cd4",
+                "reference": "ccc4f854748664cc61d1f3d4ecb26810df1f0cd4",
                 "shasum": ""
             },
             "require": {
@@ -2719,7 +2719,7 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "time": "2019-03-10T16:25:30+00:00"
+            "time": "2019-03-14T14:46:15+00:00"
         },
         {
             "name": "phpstan/phpstan-strict-rules",
@@ -3021,16 +3021,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "8.0.4",
+            "version": "8.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "a7af0201285445c9c73c4bdf869c486e36b41604"
+                "reference": "19cbed2120839772c4a00e8b28456b0c77d1a7b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a7af0201285445c9c73c4bdf869c486e36b41604",
-                "reference": "a7af0201285445c9c73c4bdf869c486e36b41604",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/19cbed2120839772c4a00e8b28456b0c77d1a7b4",
+                "reference": "19cbed2120839772c4a00e8b28456b0c77d1a7b4",
                 "shasum": ""
             },
             "require": {
@@ -3049,7 +3049,7 @@
                 "phpunit/php-code-coverage": "^7.0",
                 "phpunit/php-file-iterator": "^2.0.1",
                 "phpunit/php-text-template": "^1.2.1",
-                "phpunit/php-timer": "^2.0",
+                "phpunit/php-timer": "^2.1",
                 "sebastian/comparator": "^3.0",
                 "sebastian/diff": "^3.0",
                 "sebastian/environment": "^4.1",
@@ -3099,7 +3099,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-02-18T09:23:05+00:00"
+            "time": "2019-03-16T07:33:46+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
