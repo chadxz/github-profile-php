@@ -87,8 +87,12 @@ $container['view'] = function (Container $container) {
 $app->add(function (Request $req, Response $res, callable $next) {
     /** @var \Slim\Router $router */
     $router = $this->get('router');
+    /** @var \Psr\Log\LoggerInterface $log */
+    $log = $this->get('log');
 
     $uri = Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
+
+    $log->debug('baseUrl', ['baseUrl' => $uri->getBaseUrl()]);
     $router->setBasePath($uri->getBaseUrl());
 
     return $next($req, $res);
