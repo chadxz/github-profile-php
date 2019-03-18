@@ -28,7 +28,7 @@
     "scripts": {
         "phpstan": "phpstan analyse src",
         "csfix": "php-cs-fixer fix --dry-run --diff",
-        "test": "phpunit",
+        "test": "composer lint && phpunit",
         "lint": "composer phpstan && composer csfix"
     }
 }
