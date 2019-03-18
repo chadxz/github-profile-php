@@ -40,6 +40,10 @@ class AppController {
             $this->renderLoginPage($res);
     }
 
+    /**
+     * @param Response $res
+     * @return ResponseInterface
+     */
     private function renderLoginPage(Response $res): ResponseInterface {
         /** @var \Slim\Views\Twig $view */
         $view = $this->container['view'];
@@ -47,6 +51,11 @@ class AppController {
         return $view->render($res, 'login.twig');
     }
 
+    /**
+     * @param Response $res
+     * @return ResponseInterface
+     * @throws \App\Services\GithubServiceException
+     */
     private function renderProfilePage(Response $res): ResponseInterface {
         /** @var \SlimSession\Helper $session */
         $session = $this->container['session'];
