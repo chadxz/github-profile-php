@@ -84,11 +84,11 @@ $container['view'] = function (Container $container) {
     return $view;
 };
 
-$app->add(function (Request $req, Response $res, callable $next) {
+$app->add(function (Request $req, Response $res, callable $next) use ($app) {
     /** @var \Slim\Router $router */
-    $router = $this->get('router');
+    $router = $app->getContainer()->get('router');
     /** @var \Psr\Log\LoggerInterface $log */
-    $log = $this->get('log');
+    $log = $app->getContainer()->get('log');
 
     $uri = Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
 
