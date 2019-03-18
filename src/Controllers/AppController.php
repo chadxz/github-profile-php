@@ -28,6 +28,7 @@ class AppController {
      * @param Request $req
      * @param Response $res
      * @return ResponseInterface
+     * @throws \App\Services\GithubServiceException
      */
     public function index(Request $req, Response $res): ResponseInterface {
         /** @var \SlimSession\Helper $session */

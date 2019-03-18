@@ -5,6 +5,8 @@ use App\Controllers\AuthController;
 use App\Services\ConfigService;
 use Slim\App;
 use Slim\Container;
+use Slim\Http\Request;
+use Slim\Http\Response;
 use Slim\Http\Uri;
 use Slim\Middleware\Session;
 
@@ -82,8 +84,22 @@ $container['view'] = function (Container $container) {
     return $view;
 };
 
+$app->add(function (Request $req, Response $res, callable $next) {
+    /** @var \Slim\Router $router */
+    $router = $this->get('router');
+
+    $uri = Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
+    $router->setBasePath($uri->getBaseUrl());
+
+    return $next($req, $res);
+});
+
 $app->get('/', AppController::class . ':index')->setName('index');
 $app->get('/login', AuthController::class . ':login')->setName('login');
 $app->get('/logout', AuthController::class . ':logout')->setName('logout');
-$app->get('/github/auth-callback', AuthController::class . ':authCallback');
+
+$app
+    ->get('/github/auth-callback', AuthController::class . ':authCallback')
+    ->setName('auth-callback');
+
 $app->run();
