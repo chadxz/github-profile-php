@@ -1,0 +1,26 @@
+{% extends "layout.twig" %}
+{% block content %}
+    <div class="columns">
+        <div class="column"></div>
+        <div class="column is-half">
+            <p>
+                Hello <a href="{{ profile.url }}">{{ profile.name }}</a>.
+                Care to <a href="{{ path_for('logout') }}">logout</a>?
+            </p>
+            {% if not profile.repositories is empty %}
+                <p>Here are your repositories:</p>
+                <ul>
+                    {% for repo in profile.repositories %}
+                        <li>
+                            <a href="{{ repo.url }}">{{ repo.name }}</a>
+                            (⭐️ {{ repo.stargazers }})
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>You have no Github repositories. :(</p>
+            {% endif %}
+        </div>
+        <div class="column"></div>
+    </div>
+{% endblock %}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>github-profile-php</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css" />
+    <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js"></script>
+    <script defer src="/public/app.js"></script>
+</head>
+<body>
+<section class="section">
+    <div class="container">
+        {% if not flash('login') is empty %}
+            <div class="columns">
+                <div class="column"></div>
+                <div class="column is-half">
+                    {% for msg in flash('login') %}
+                        <div class="notification is-info">
+                            <button class="delete"></button>
+                            {{ msg }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="column"></div>
+            </div>
+        {% endif %}
+
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</section>
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>
+            Created by <a href="https://github.com/chadxz">Chad McElligott</a>.
+            Source code:
+            <a href="https://github.com/chadxz/github-profile-php">
+                chadxz/github-profile-php
+            </a>.
+        </p>
+    </div>
+</footer>
+</body>
+</html>

@@ -10,7 +10,7 @@ use Slim\Http\Response;
 use Slim\Http\Uri;
 use Slim\Middleware\Session;
 
-require '../vendor/autoload.php';
+require '../../vendor/autoload.php';
 
 $app = new App([
     'Settings' => [
@@ -40,7 +40,7 @@ $container['session'] = function () {
 };
 
 $container['config'] = function () {
-    $root_dir = dirname(dirname(__FILE__));
+    $root_dir = dirname(dirname(__DIR__));
     $config = new ConfigService();
     $config::load($root_dir);
 
