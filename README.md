@@ -1,6 +1,6 @@
 # github-profile-php
 
-Playground for messing with php and consuming a graphql client.
+Playground for messing with php.
 
 Inspired by 
 [https://github.com/wemake-services/meta/issues/7](https://github.com/wemake-services/meta/issues/7)
@@ -30,6 +30,14 @@ $ git remote add heroku git@heroku.com:github-profile-php.git
 $ git push heroku master
 ```
 
+The following environment variables should be configured:
+
+- **GITHUB_CLIENT_ID**: The client id of the Github App to use for this app
+- **GITHUB_CLIENT_SECRET**: The client secret of the Github App to use for this app
+
+The Github App should be configured with the "User authorization callback" set
+to the base url of your app, with the path of `/github/auth-callback`
+ 
 ### heroku
 
 The heroku app must have `runtime-new-layer-extract` lab enabled to work around
