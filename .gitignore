@@ -4,3 +4,4 @@ phpinfo.php
 .idea
 .env*
 !.env.example
+.phpunit.result.cache
