@@ -60,7 +60,7 @@ class GithubService {
      */
     public function getProfile(string $token): array {
         $user = $this->getAuthenticatedUser($token);
-        $repositories = $this->getUserRepositories($user['login'], $token);
+        $repositories = $this->getUserRepositories($token);
 
         return [
             'name' => $user['login'],
@@ -91,12 +91,11 @@ class GithubService {
     }
 
     /**
-     * @param string $user
      * @param string $token
      * @return array
      * @throws GithubServiceException
      */
-    private function getUserRepositories(string $user, string $token): array {
+    private function getUserRepositories(string $token): array {
         $res = $this->http->get(
             'https://api.github.com/user/repos?visibility=public&affiliation=owner',
             [

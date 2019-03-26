@@ -10,7 +10,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 
 class GithubServiceTest extends TestCase {
@@ -48,7 +47,10 @@ class GithubServiceTest extends TestCase {
      * @throws GithubServiceException
      */
     public function test_getLoginToken_requestsATokenFromGithub() {
-        $client = $this->getMockClient('post', 200, ['access_token' => 'foo']);
+        $resp = new Response(200, [], json_encode(['access_token' => 'foo']));
+        $client = Mockery::mock(Client::class);
+        $client->shouldReceive('post')->andReturn($resp);
+
         $github = new GithubService($client);
 
         $github->getLoginToken(
@@ -79,7 +81,10 @@ class GithubServiceTest extends TestCase {
      * @throws GithubServiceException
      */
     public function test_getLoginToken_onUnexpectedResponse_throwsGithubServiceException() {
-        $client = $this->getMockClient('post', 400);
+        $resp = new Response(400, [], json_encode([]));
+        $client = Mockery::mock(Client::class);
+        $client->shouldReceive('post')->andReturn($resp);
+
         $github = new GithubService($client);
 
         $this->expectException(GithubServiceException::class);
@@ -99,7 +104,10 @@ class GithubServiceTest extends TestCase {
      * @throws GithubServiceException
      */
     public function test_getLoginToken_onSuccessfulResponse_returnsLoginToken() {
-        $client = $this->getMockClient('post', 200, ['access_token' => 'foo']);
+        $resp = new Response(200, [], json_encode(['access_token' => 'foo']));
+        $client = Mockery::mock(Client::class);
+        $client->shouldReceive('post')->andReturn($resp);
+
         $github = new GithubService($client);
 
         $token = $github->getLoginToken(
@@ -116,21 +124,224 @@ class GithubServiceTest extends TestCase {
     }
 
     /**
-     * @param string $method
-     * @param int $status
-     * @param array $body
-     * @return Client|MockInterface
+     * @throws GithubServiceException
      */
-    private function getMockClient(
-        string $method,
-        int $status,
-        array $body = []
-    ): MockInterface {
-        $result = Mockery::mock(Client::class);
-        $result
-            ->shouldReceive($method)
-            ->andReturn(new Response($status, [], json_encode($body)));
+    public function test_getProfile_onAuthenticatedUserUnexpectedResponse_throwsGithubServiceException() {
+        $resp = new Response(400, [], json_encode([]));
+        $client = Mockery::mock(Client::class);
+        $client
+            ->shouldReceive('get')
+            ->withArgs([
+                'https://api.github.com/user',
+                [
+                    'headers' => [
+                        'Authorization' => "Bearer foo"
+                    ]
+                ]
+            ])
+            ->andReturn($resp);
 
-        return $result;
+        $github = new GithubService($client);
+
+        $this->expectException(GithubServiceException::class);
+
+        $github->getProfile('foo');
+    }
+
+    /**
+     * @throws GithubServiceException
+     */
+    public function test_getProfile_onUserReposUnexpectedResponse_throwsGithubServiceException() {
+        $client = Mockery::mock(Client::class);
+        $client
+            ->shouldReceive('get')
+            ->withArgs([
+                'https://api.github.com/user',
+                [
+                    'headers' => [
+                        'Authorization' => "Bearer foo"
+                    ]
+                ]
+            ])
+            ->andReturn(
+                new Response(
+                    200,
+                    [],
+                    json_encode([
+                        'login' => 'chadxz',
+                        'html_url' => 'https://github.com/chadxz'
+                    ])
+                )
+            );
+
+        $client
+            ->shouldReceive('get')
+            ->withArgs([
+                'https://api.github.com/user/repos?visibility=public&affiliation=owner',
+                [
+                    'headers' => [
+                        'Authorization' => "Bearer foo"
+                    ]
+                ]
+            ])
+            ->andReturn(new Response(400, [], json_encode([])));
+
+        $github = new GithubService($client);
+
+        $this->expectException(GithubServiceException::class);
+
+        $github->getProfile('foo');
+    }
+
+    /**
+     * @throws GithubServiceException
+     */
+    public function test_getProfile_onSuccess_returnsProfile() {
+        $client = Mockery::mock(Client::class);
+        $client
+            ->shouldReceive('get')
+            ->withArgs([
+                'https://api.github.com/user',
+                [
+                    'headers' => [
+                        'Authorization' => "Bearer foo"
+                    ]
+                ]
+            ])
+            ->andReturn(
+                new Response(
+                    200,
+                    [],
+                    json_encode([
+                        'login' => 'chadxz',
+                        'html_url' => 'https://github.com/chadxz'
+                    ])
+                )
+            );
+
+        $client
+            ->shouldReceive('get')
+            ->withArgs([
+                'https://api.github.com/user/repos?visibility=public&affiliation=owner',
+                [
+                    'headers' => [
+                        'Authorization' => "Bearer foo"
+                    ]
+                ]
+            ])
+            ->andReturn(
+                new Response(
+                    200,
+                    [],
+                    json_encode([
+                        [
+                            'full_name' => 'github-profile-php',
+                            'html_url' =>
+                                'https://github.com/chadxz/github-profile-php',
+                            'stargazers_count' => 1
+                        ]
+                    ])
+                )
+            );
+
+        $github = new GithubService($client);
+
+        $profile = $github->getProfile('foo');
+
+        $this->assertEquals(
+            [
+                'name' => 'chadxz',
+                'url' => 'https://github.com/chadxz',
+                'repositories' => [
+                    [
+                        'name' => 'github-profile-php',
+                        'url' => 'https://github.com/chadxz/github-profile-php',
+                        'stargazers' => 1
+                    ]
+                ]
+            ],
+            $profile
+        );
+    }
+
+    /**
+     * @throws GithubServiceException
+     */
+    public function test_getProfile_onSuccess_sortsRepositoriesByStargazers() {
+        $client = Mockery::mock(Client::class);
+        $client
+            ->shouldReceive('get')
+            ->withArgs([
+                'https://api.github.com/user',
+                [
+                    'headers' => [
+                        'Authorization' => "Bearer foo"
+                    ]
+                ]
+            ])
+            ->andReturn(
+                new Response(
+                    200,
+                    [],
+                    json_encode([
+                        'login' => 'chadxz',
+                        'html_url' => 'https://github.com/chadxz'
+                    ])
+                )
+            );
+
+        $client
+            ->shouldReceive('get')
+            ->withArgs([
+                'https://api.github.com/user/repos?visibility=public&affiliation=owner',
+                [
+                    'headers' => [
+                        'Authorization' => "Bearer foo"
+                    ]
+                ]
+            ])
+            ->andReturn(
+                new Response(
+                    200,
+                    [],
+                    json_encode([
+                        [
+                            'full_name' => 'github-profile-php',
+                            'html_url' =>
+                                'https://github.com/chadxz/github-profile-php',
+                            'stargazers_count' => 1
+                        ],
+                        [
+                            'full_name' => 'awry',
+                            'html_url' => 'https://github.com/chadxz/awry',
+                            'stargazers_count' => 14
+                        ]
+                    ])
+                )
+            );
+
+        $github = new GithubService($client);
+
+        $profile = $github->getProfile('foo');
+
+        $this->assertEquals(
+            [
+                'name' => 'chadxz',
+                'url' => 'https://github.com/chadxz',
+                'repositories' => [
+                    [
+                        'name' => 'awry',
+                        'url' => 'https://github.com/chadxz/awry',
+                        'stargazers' => 14
+                    ],
+                    [
+                        'name' => 'github-profile-php',
+                        'url' => 'https://github.com/chadxz/github-profile-php',
+                        'stargazers' => 1
+                    ]
+                ]
+            ],
+            $profile
+        );
     }
 }
