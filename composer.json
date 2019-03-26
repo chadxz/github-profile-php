@@ -35,6 +35,8 @@
         "phpstan": "phpstan analyse src",
         "csfix": "php-cs-fixer fix --dry-run --diff",
         "test": "composer lint && phpunit",
-        "lint": "composer phpstan && composer csfix"
+        "lint": "composer phpstan && composer csfix",
+        "cover":"phpunit --coverage-html coverage/",
+        "ci": "composer lint && phpunit --coverage-clover coverage/coverage.xml"
     }
 }

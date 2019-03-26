@@ -5,3 +5,4 @@ phpinfo.php
 .env*
 !.env.example
 .phpunit.result.cache
+coverage/

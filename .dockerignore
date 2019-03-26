@@ -9,3 +9,4 @@ README.md
 .gitignore
 bin/compose.sh
 phpinfo.php
+coverage/

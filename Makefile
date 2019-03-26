@@ -1,5 +1,7 @@
 SHELL := /bin/bash
 IMAGE_NAME := github-profile-php
+CONTAINER_UID := $(shell date +'%Y%m%d-%H%M%S')
+CONTAINER_NAME := $(IMAGE_NAME)-$(CONTAINER_UID)
 
 #
 # default build target
@@ -19,6 +21,18 @@ lint: build
 #
 test: build
 	docker run -ti --rm $(IMAGE_NAME) composer test
+.PHONY: test
+
+#
+# Run unit tests with code coverage for CI
+#
+ci: build
+	docker run -ti \
+			   -e DEBUG=true \
+			   --name $(CONTAINER_NAME) \
+			   $(IMAGE_NAME) \
+			   composer ci
+	docker cp $(CONTAINER_NAME):/var/www/html/coverage/coverage.xml .
 .PHONY: test
 
 #

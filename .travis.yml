@@ -1,5 +1,7 @@
 services:
     - docker
-script: make test
+script: make ci
 after_script:
     - make clean
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
