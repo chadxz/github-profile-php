@@ -1,5 +1,13 @@
 # github-profile-php
 
+[![Build Status][Build Status Image]][Build Status Link]
+[![Codecov][Codecov Image]][Codecov Link]
+
+[Build Status Image]: https://travis-ci.org/chadxz/github-profile-php.svg?branch=master
+[Build Status Link]: https://travis-ci.org/chadxz/github-profile-php
+[Codecov Image]: https://img.shields.io/codecov/c/github/chadxz/github-profile-php.svg
+[Codecov Link]: https://codecov.io/gh/chadxz/github-profile-php
+
 Playground for messing with php.
 
 Inspired by 
