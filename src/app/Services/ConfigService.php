@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use Dotenv\Dotenv;
+use Symfony\Component\Dotenv\Dotenv;
 
 class ConfigService {
     /**
@@ -12,8 +12,8 @@ class ConfigService {
         $file_path = realpath("{$env_file_dir}/.env");
 
         if ($file_path !== false && file_exists($file_path)) {
-            $dotenv = Dotenv::create($env_file_dir);
-            $dotenv->load();
+            $dotenv = new Dotenv();
+            $dotenv->load($file_path);
         }
     }
 

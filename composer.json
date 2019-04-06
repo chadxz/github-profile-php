@@ -6,13 +6,13 @@
     "require": {
         "ext-json": "*",
         "slim/slim": "^3.12",
-        "vlucas/phpdotenv": "^3.3",
         "bryanjhv/slim-session": "^3.6",
         "guzzlehttp/guzzle": "^6.3",
         "slim/flash": "^0.4.0",
         "slim/twig-view": "^2.4",
         "kanellov/slim-twig-flash": "^0.2.0",
-        "monolog/monolog": "^1.24"
+        "monolog/monolog": "^1.24",
+        "symfony/dotenv": "^4.2"
     },
     "require-dev": {
         "phpstan/phpstan": "^0.11.3",
