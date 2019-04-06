@@ -23,12 +23,15 @@ RUN curl --silent --fail --location --retry 3 --output /tmp/installer.php \
 # ------------------------------
 # Application
 # ------------------------------
-RUN apt-get update -qq && \
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
+    apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive \
     apt-get install -y --no-install-recommends \
+        git \
+        libzip-dev \
+        nodejs \
         unzip \
         vim \
-        libzip-dev \
         && \
     apt-get purge -y --auto-remove && \
     rm -rf /var/lib/apt/lists/*
@@ -38,8 +41,8 @@ RUN docker-php-ext-install json zip && \
     rm -rf /tmp/pear
 
 # Install application
-COPY composer.json composer.lock /var/www/html/
-RUN composer install
+COPY composer.json composer.lock package.json package-lock.json /var/www/html/
+RUN composer install && npm install
 COPY . /var/www/html
 
 # ------------------------------

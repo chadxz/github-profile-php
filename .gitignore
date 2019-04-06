@@ -6,3 +6,4 @@ phpinfo.php
 !.env.example
 .phpunit.result.cache
 coverage/
+node_modules

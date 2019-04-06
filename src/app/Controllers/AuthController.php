@@ -90,13 +90,15 @@ class AuthController {
         }
 
         try {
-            $token = $github->getLoginToken(new GithubTokenRequestParams(
-                $client_id,
-                $client_secret,
-                $req->getQueryParam('code'),
-                $router->pathFor('auth-callback'),
-                $req->getQueryParam('state')
-            ));
+            $token = $github->getLoginToken(
+                new GithubTokenRequestParams(
+                    $client_id,
+                    $client_secret,
+                    $req->getQueryParam('code'),
+                    $router->pathFor('auth-callback'),
+                    $req->getQueryParam('state')
+                )
+            );
 
             $session->set('token', $token);
             $flash->addMessage('login', 'Logged in!');

@@ -10,3 +10,4 @@ README.md
 bin/compose.sh
 phpinfo.php
 coverage/
+node_modules

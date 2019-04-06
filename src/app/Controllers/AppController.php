@@ -36,9 +36,9 @@ class AppController {
 
         $token = $session->get('token');
 
-        return $token !== null ?
-            $this->renderProfilePage($res) :
-            $this->renderLoginPage($res);
+        return $token !== null
+            ? $this->renderProfilePage($res)
+            : $this->renderLoginPage($res);
     }
 
     /**

@@ -32,8 +32,10 @@
     },
     "scripts": {
         "ci": "composer lint && phpunit --coverage-clover coverage/coverage.xml",
-        "cover":"phpunit --coverage-html coverage/",
-        "lint": "composer phpstan",
+        "cover": "phpunit --coverage-html coverage/",
+        "check-format": "npm run check-format",
+        "format": "npm run format",
+        "lint": "composer phpstan && composer check-format",
         "phpstan": "phpstan analyse src",
         "test": "composer lint && phpunit"
     }

@@ -1,0 +1,23 @@
+{
+  "name": "github-profile-php",
+  "version": "1.0.0",
+  "description": "PHP example of rendering github profile data",
+  "private": true,
+  "scripts": {
+    "check-format": "prettier --check \"src/**/*.{php,js}\"",
+    "format": "prettier --write \"src/**/*.{php,js}\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chadxz/github-profile-php.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chadxz/github-profile-php/issues"
+  },
+  "homepage": "https://github.com/chadxz/github-profile-php",
+  "devDependencies": {
+    "@prettier/plugin-php": "^0.10.2",
+    "prettier": "^1.16.4"
+  }
+}

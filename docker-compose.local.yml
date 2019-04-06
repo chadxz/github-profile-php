@@ -5,7 +5,7 @@ services:
   github-profile-php:
     volumes:
       - .:/var/www/html
-    command: bash -c "composer install && apache2-foreground"
+    command: bash -c "composer install && npm install && apache2-foreground"
     environment:
       DEBUG: 'true'
       XDEBUG_CONFIG:
