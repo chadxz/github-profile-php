@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 class GithubService {
@@ -42,7 +44,7 @@ class GithubService {
             ]
         );
 
-        $values = json_decode($response->getBody(), true);
+        $values = json_decode((string) $response->getBody(), true);
 
         if ($response->getStatusCode() !== 200) {
             throw new GithubServiceException(
@@ -87,7 +89,7 @@ class GithubService {
             );
         }
 
-        return json_decode($res->getBody(), true);
+        return json_decode((string) $res->getBody(), true);
     }
 
     /**
@@ -111,7 +113,7 @@ class GithubService {
             );
         }
 
-        $repositories = json_decode($res->getBody(), true);
+        $repositories = json_decode((string) $res->getBody(), true);
 
         $result = array_map(function ($r) {
             return [
