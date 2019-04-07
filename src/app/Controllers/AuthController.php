@@ -34,8 +34,7 @@ class AuthController {
      * @throws \Exception
      */
     public function login(Request $req, Response $res): Response {
-        /** @var \App\Services\ConfigService $config */
-        $config = $this->container['config'];
+        $settings = $this->container['settings'];
         /** @var \SlimSession\Helper $session */
         $session = $this->container['session'];
         /** @var \App\Services\GithubService $github */
@@ -43,7 +42,7 @@ class AuthController {
         /** @var \Slim\Router $router */
         $router = $this->container['router'];
 
-        $client_id = $config::get('GITHUB_CLIENT_ID');
+        $client_id = $settings['GITHUB_CLIENT_ID'];
 
         $state = bin2hex(random_bytes(20));
         $session->set('login_state', $state);
@@ -70,8 +69,7 @@ class AuthController {
      * @throws \Exception
      */
     public function authCallback(Request $req, Response $res): Response {
-        /** @var \App\Services\ConfigService $config */
-        $config = $this->container['config'];
+        $settings = $this->container['settings'];
         /** @var \Slim\Router $router */
         $router = $this->container['router'];
         /** @var \SlimSession\Helper $session */
@@ -83,8 +81,8 @@ class AuthController {
         /** @var \App\Services\GithubService $github */
         $github = $this->container['github'];
 
-        $client_id = $config::get('GITHUB_CLIENT_ID');
-        $client_secret = $config::get('GITHUB_CLIENT_SECRET');
+        $client_id = $settings['GITHUB_CLIENT_ID'];
+        $client_secret = $settings['GITHUB_CLIENT_SECRET'];
 
         if (!$this->isLoginStateValid($req)) {
             $flash->addMessage('login', 'Login request invalid. Try again.');

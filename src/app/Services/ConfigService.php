@@ -8,15 +8,13 @@ use Symfony\Component\Dotenv\Dotenv;
 
 class ConfigService {
     /**
-     * @param string $env_file_dir
+     * Helper for loading a .env file
+     *
+     * @param string $env_file
      */
-    public static function load(string $env_file_dir): void {
-        $file_path = realpath("{$env_file_dir}/.env");
-
-        if ($file_path !== false && file_exists($file_path)) {
-            $dotenv = new Dotenv();
-            $dotenv->load($file_path);
-        }
+    public static function loadEnvFile(string $env_file): void {
+        $dotenv = new Dotenv();
+        $dotenv->load($env_file);
     }
 
     /**
